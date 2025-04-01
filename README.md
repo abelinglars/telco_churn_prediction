@@ -1,10 +1,6 @@
 # Customer Churn Prediction for Telecommunications company
 
-<img src="assets/FastAPI.png" height="140">
-<img src="assets/scikit-learn.png" height="140">
-<img src="assets/Matplotlib.png" height="140">
-<img src="assets/Pandas.png" height="140">
-<img src="assets/Numpy.png" height="140">
+<img src="assets/FastAPI.png" height="140"> <img src="assets/scikit-learn.png" height="140"> <img src="assets/Matplotlib.png" height="140"> <img src="assets/Pandas.png" height="140"> <img src="assets/NumPy.png" height="140">
 
 ## Abstract
 Exploratory data analysis of telecommunication churn data, fitting a model to predict churn and productionising it with fastapi and docker.
