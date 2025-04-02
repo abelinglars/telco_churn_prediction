@@ -18,6 +18,19 @@ class CSVLoader(Loader):
     def load(self, source: str) -> pd.DataFrame:
         return pd.read_csv(source)
 
+class Writer(ABC):
+    """Data Writer Interface"""
+    @abstractmethod
+    def write(self, obj:pd.DataFrame, dest: str) -> str:
+        pass
+
+class CSVWriter(Writer):
+    """Write csv files"""
+    #def __init__(self, dest:str):
+    def write(self, obj: pd.DataFrame, dest: str) -> str:
+        obj.to_csv(dest)
+        return dest
+
 class TelcoCleaner():
     def __init__(self, path: str):
         self.path = path
@@ -28,7 +41,8 @@ class TelcoCleaner():
         self.data = loader.load(self.path)
 
     def validate_input(self):
-        pass
+        valid = isinstance(self.data, pd.DataFrame)
+        return valid
 
     def clean_column_names(self):
 
@@ -105,6 +119,18 @@ class TelcoCleaner():
     def remove_columns(self):
         self.data = self.data.drop(columns = "customer_id")
 
+    def recode_senior_citizen(self):
+        self.data['senior_citizen'] = self.data['senior_citizen'].map(
+            {0: "no", 1: "yes"}
+        )
+    def get_data(self):
+        #self.validate_output(data)
+        return self.data
+
+    def write_data(self, writer, path):
+        writer = writer()
+        writer.write(obj = self.data, dest = path)
+
     def validate_output(self):
         pass
 
@@ -131,7 +157,10 @@ if __name__ == "__main__":
         path = "raw_data/raw_data_telco.csv"
     cleaner = TelcoCleaner(path)
     cleaner.load_data(source = path, loader = CSVLoader)
+    cleaner.validate_input()
     cleaner.clean_column_names()
     cleaner.fix_total_charges()
     cleaner.check_string_cols_for_empty_values()
+    cleaner.recode_senior_citizen()
     cleaner.show()
+    cleaner.write_data(writer = CSVWriter, path = "data/cleaned_data.csv")
