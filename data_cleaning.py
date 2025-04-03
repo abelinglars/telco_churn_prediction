@@ -28,7 +28,7 @@ class CSVWriter(Writer):
     """Write csv files"""
     #def __init__(self, dest:str):
     def write(self, obj: pd.DataFrame, dest: str) -> str:
-        obj.to_csv(dest)
+        obj.to_csv(dest, index = False)
         return dest
 
 class TelcoCleaner():
